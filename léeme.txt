@@ -1,0 +1,7 @@
+En este Rmd lo que se desea es hacer cómo práctica de tidyverse manipulación de las variables del DataFrame
+llamado Covid, descargado del repositorio:
+
+https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
+
+también se hace un análisis de regresión de los resultados obtenidos luego de la manipulación anteriormente indicada usando
+el paquete SuperLearner.

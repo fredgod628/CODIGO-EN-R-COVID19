@@ -1,0 +1,110 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(tidyverse)
+library(SuperLearner)
+library(xlsx)
+```
+
+```{r}
+#################################### DESCARGA DEL ARCHIVO DE INTERNET ###############################
+download.file(
+  url="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",
+  destfile ="COVID19_2.csv"
+)
+
+# url: es la direccion internet donde se encuentra el archivo
+# destfile: es el nombre con el que queremos que se guarde el archivo en nuestra computadora
+######################################################################################################
+```
+
+```{r}
+
+Covid<-read.csv("COVID19_2.csv", sep = ",")
+glimpse(Covid)
+  
+
+```
+
+
+```{r}
+df<-
+  Covid %>%
+  select(Country.Region,X1.31.20,X2.29.20,X3.31.20,X4.30.20,X5.31.20,X6.27.20) %>% 
+  rename(Paises=Country.Region,Enero=X1.31.20,Febrero=X2.29.20,Marzo=X3.31.20,
+           Abril=X4.30.20,Mayo=X5.31.20,Junio=X6.27.20)
+
+```
+
+# Aqui ordenamos los datos por el ultimo mes censado y agregando algunas columnas
+```{r}
+arreglo<-  
+    df %>%
+  arrange(desc(Junio)) %>%
+  group_by(Paises) %>%
+  ungroup() %>%
+  mutate(Puesto=row_number()) %>%
+  relocate(Puesto,.before=Enero) 
+
+ View(arreglo)
+    ```
+
+# Observando el puesto por Pais y visualizando algunas metricas
+```{r}
+Pais=c("Venezuela") # Introduzca aqui el Pais que desee analizar 
+
+arreglo2<-
+arreglo %>% 
+filter(Paises==Pais)
+
+arreglo2 %>%
+  transmute(PAIS=Pais,PUESTO=Puesto,Total_Casos=Junio,
+            Promedio_Casos=rowMeans(arreglo2[ , 3:8]))
+```
+
+
+
+```{r}
+# BUSQUEDA POR PUESTO
+
+IntroduzcaPuesto=c(77)
+
+arreglo3<-
+arreglo %>% 
+  filter(Puesto==IntroduzcaPuesto)
+
+  arreglo3 %>% 
+   transmute(PuestoEscogido=Puesto, Pais=Paises, Total_Casos=Julio,
+            Promedio_Casos=rowMeans(arreglo3[ , 3:9]))
+```
+
+# Prediccion con Learner
+```{r}
+ # PREDICCIONES CON SUPERLEARNER
+  
+  dfPredict<-
+    arreglo %>% 
+    select(-Puesto)
+  View(dfPredict)
+  
+  
+  y=dfPredict$Junio
+  
+  X=dfPredict[,-(7)]
+  
+  set.seed(1234)
+  
+  predicciones=SuperLearner(y,X,family = gaussian(),
+                            SL.library=c("SL.randomForest","SL.caret")) 
+  
+P=predicciones$library.predict
+View(P)
+
+```
+
+
+
