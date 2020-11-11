@@ -1,0 +1,46 @@
+ESPERANDO LOS RESULTADOS DE NOVIEMBRE... 
+
+TOMANDO LOS VALORES DE EEUU
+
+Random
+7.224.983
+
+Caret
+7.297.003
+
+
+Registros Octubre 
+9.133.404
+
+Observ      Pred
+9.133.404 - 7.224.983 = 1.908.421
+
+9.133.404 - 7.297.003 = 1.836.401
+
+Estimado de contagios para Noviembre aproximadamente
+Solo EEUU De 10.969.805 a 11.041.825 millones de habitantes
+
+Pareciera que la tendencia es de aumento en los casos de contagio
+
+
+TOMANDO LOS VALORES DE VENEZUELA
+
+Random
+99.743,024
+
+Caret
+94.704,003
+
+
+Registros Octubre 
+92.013
+
+Observ    Pred
+92.013 -  99.743 =-7730 
+
+92.013 -  94.704 =-2691 
+
+Estimado de contagios para Noviembre aproximadamente
+Solo Venezuela De 84.283 a 89.322  miles de habitantes
+
+Pareciera haber una tendencia a la baja en los casos de contagios 

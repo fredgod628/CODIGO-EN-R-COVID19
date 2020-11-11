@@ -22,14 +22,17 @@ download.file(
 ```
 
 ```{r}
-
 Covid<-read.csv("COVID19_2.csv", sep = ",")
   
-df<-
+glimpse(Covid)
+
+  df<-
   Covid %>%
-  select(Country.Region,X1.31.20,X2.29.20,X3.31.20,X4.30.20,X5.31.20,X6.30.20,X7.31.20,X8.31.20) %>% 
+  select(Country.Region,X1.31.20,X2.29.20,X3.31.20,X4.30.20,X5.31.20,X6.30.20,X7.31.20,X8.31.20,
+        X9.30.20,X10.31.20) %>% 
   rename(Paises=Country.Region,Enero=X1.31.20,Febrero=X2.29.20,Marzo=X3.31.20,
-           Abril=X4.30.20,Mayo=X5.31.20,Junio=X6.30.20,Julio=X7.31.20,Agosto=X8.31.20)
+           Abril=X4.30.20,Mayo=X5.31.20,Junio=X6.30.20,Julio=X7.31.20,Agosto=X8.31.20,
+         Septiembre=X9.30.20,Octubre=X10.31.20)
 ```
 
 # Aqui ordenamos los datos por el ultimo mes censado y agregando algunas columnas
@@ -37,7 +40,7 @@ df<-
 arreglo<-  
     
 df %>%
-  arrange(desc(Agosto)) %>%
+  arrange(desc(Octubre)) %>%
   group_by(Paises) %>%
   ungroup() %>%
   mutate(Puesto=row_number()) %>%
@@ -48,7 +51,7 @@ df %>%
 
 # Observando el puesto por Pais y visualizando algunas metricas
 ```{r}
-Pais=c("Canada") # Introduzca aqui el Pais que desee analizar 
+Pais=c("Venezuela") # Introduzca aqui el Pais que desee analizar 
 
 arreglo2<-
 arreglo %>% 
@@ -56,7 +59,7 @@ filter(Paises==Pais)
 
 arreglo2 %>%
   transmute(PAIS=Pais,PUESTO=Puesto,Total_Casos=Agosto,
-            Promedio_Casos=rowMeans(arreglo2[ , 3:10]))
+            Promedio_Casos=rowMeans(arreglo2[ , 3:12]))
 ```
 
 ```{r}
@@ -69,7 +72,7 @@ arreglo %>%
 
   arreglo3 %>% 
    transmute(PuestoEscogido=Puesto, Pais=Paises, Total_Casos=Agosto,
-            Promedio_Casos=rowMeans(arreglo3[ , 3:10])) 
+            Promedio_Casos=rowMeans(arreglo3[ , 3:12])) 
   
     
 ```
@@ -81,13 +84,13 @@ arreglo4<-
   arreglo3 %>%
   rename(Nro_Casos=Paises,) %>%
   select(-Puesto) %>%
-  gather(Meses,Nro_Casos,Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto) 
+  gather(Meses,Nro_Casos,Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre) 
 
  
 ##REORDENANDO LAS ETIQUETA PARA QUE APREZCAN A CONVENIENCIA EN EL EJE X
  arreglo4$Meses<-factor(arreglo4$Meses,levels=c("Enero","Febrero","Marzo",
                                                  "Abril","Mayo","Junio","Julio",
-                                                 "Agosto"))
+                                                 "Agosto","Septiembre","Octubre"))
 grafica<-
   arreglo4 %>%
   ggplot(aes(x=Meses,y=Nro_Casos))+
@@ -108,9 +111,9 @@ grafica<-
     select(-Puesto)
 View(dfPredict)  
 
-  y=dfPredict$Agosto
+  y=dfPredict$Octubre
   
-  X=dfPredict[,-(9)]
+  X=dfPredict[,-(11)]
  
   
   set.seed(1234)
